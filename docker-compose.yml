@@ -3,6 +3,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_JIRA_LINKS=${NEXT_PUBLIC_JIRA_LINKS}
     ports:
       - "3001:3000"
     environment:

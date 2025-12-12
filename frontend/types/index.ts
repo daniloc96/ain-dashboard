@@ -4,6 +4,7 @@ export interface Todo {
     id: number;
     title: string;
     completed: boolean;
+    order: number;
 }
 
 export interface GithubPR {

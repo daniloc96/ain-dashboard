@@ -3,6 +3,10 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Build args
+ARG NEXT_PUBLIC_JIRA_LINKS
+ENV NEXT_PUBLIC_JIRA_LINKS=$NEXT_PUBLIC_JIRA_LINKS
+
 # Copy package files
 COPY package*.json ./
 RUN npm ci

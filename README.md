@@ -156,6 +156,17 @@ JIRA_API_TOKEN=your_api_token_here
 JIRA_TASK_STATUS_ENABLED="In Progress,To Do"
 ```
 
+#### Step 4: Configure Quick Links (Optional)
+
+You can add shortcuts to specific Jira boards in the header using a JSON string:
+
+```bash
+NEXT_PUBLIC_JIRA_LINKS='[
+  {"name": "Sprint Board", "url": "https://your-domain.atlassian.net/jira/software/c/projects/PROJ/boards/1"},
+  {"name": "Backlog", "url": "https://your-domain.atlassian.net/jira/software/c/projects/PROJ/boards/1/backlog"}
+]'
+```
+
 ---
 
 ### 📅 Google Calendar & Gmail Widgets

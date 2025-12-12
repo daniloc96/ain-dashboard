@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 class TodoBase(BaseModel):
     title: str
@@ -9,9 +10,14 @@ class TodoCreate(TodoBase):
 
 class Todo(TodoBase):
     id: int
+    order: int = 0
 
     class Config:
         orm_mode = True
+
+class TodoReorder(BaseModel):
+    """Schema for reordering todos - list of todo IDs in new order."""
+    order: List[int]
 
 class GithubPR(BaseModel):
     title: str
