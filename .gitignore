@@ -1,0 +1,13 @@
+.env
+.env.local
+.volumes/
+node_modules/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Google OAuth credentials - NEVER commit these!
+credentials.json
+token.json
+backend/credentials.json
+backend/token.json
