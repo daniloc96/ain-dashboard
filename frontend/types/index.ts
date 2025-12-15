@@ -14,6 +14,7 @@ export interface GithubPR {
     author: string;
     created_at: string;
     state: string;
+    labels: { name: string; color: string }[];
 }
 
 export interface JiraIssue {

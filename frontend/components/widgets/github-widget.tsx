@@ -59,6 +59,23 @@ export function GithubWidget() {
                                         <p className="text-sm font-medium leading-none truncate max-w-[200px] sm:max-w-[300px]" title={pr.title}>
                                             {pr.title}
                                         </p>
+                                        {pr.labels && pr.labels.length > 0 && (
+                                            <div className="flex flex-wrap gap-1 mt-1">
+                                                {pr.labels.map((label, i) => (
+                                                    <Badge
+                                                        key={i}
+                                                        variant="secondary"
+                                                        className="px-1.5 py-0 text-[10px] h-5 font-normal border-0"
+                                                        style={{
+                                                            backgroundColor: `#${label.color}`,
+                                                            color: ((parseInt(label.color.substring(0, 2), 16) * 299 + parseInt(label.color.substring(2, 4), 16) * 587 + parseInt(label.color.substring(4, 6), 16) * 114) / 1000) >= 128 ? 'black' : 'white'
+                                                        }}
+                                                    >
+                                                        {label.name}
+                                                    </Badge>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                     <Button variant="ghost" size="icon" className="h-6 w-6" asChild>
                                         <a href={pr.url} target="_blank" rel="noopener noreferrer">

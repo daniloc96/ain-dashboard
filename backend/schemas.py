@@ -19,6 +19,10 @@ class TodoReorder(BaseModel):
     """Schema for reordering todos - list of todo IDs in new order."""
     order: List[int]
 
+class GithubLabel(BaseModel):
+    name: str
+    color: str
+
 class GithubPR(BaseModel):
     title: str
     url: str
@@ -26,6 +30,7 @@ class GithubPR(BaseModel):
     author: str
     created_at: str
     state: str
+    labels: List[GithubLabel] = []
 
 class JiraIssue(BaseModel):
     key: str

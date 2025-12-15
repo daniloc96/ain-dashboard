@@ -124,11 +124,14 @@ def _parse_pr_item(item: dict) -> GithubPR:
     repo_url = item["repository_url"]
     repo_name = repo_url.split("repos/")[-1]
     
+    labels = [{"name": l["name"], "color": l["color"]} for l in item.get("labels", [])]
+    
     return GithubPR(
         title=item["title"],
         url=pr_url,
         repo=repo_name,
         author=item["user"]["login"],
         created_at=item["created_at"],
-        state=item["state"]
+        state=item["state"],
+        labels=labels
     )
