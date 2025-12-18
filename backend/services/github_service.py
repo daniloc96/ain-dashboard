@@ -135,3 +135,45 @@ def _parse_pr_item(item: dict) -> GithubPR:
         state=item["state"],
         labels=labels
     )
+
+
+def get_my_prs() -> List[GithubPR]:
+    """Get open PRs created by the authenticated user."""
+    if not GITHUB_TOKEN:
+        print("Warning: GITHUB_TOKEN not set")
+        return []
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    
+    try:
+        # Search for open PRs authored by the current user
+        query = "type:pr state:open author:@me"
+        response = requests.get(
+            f"{GITHUB_API_URL}/search/issues",
+            headers=headers,
+            params={"q": query, "sort": "created", "order": "desc"}
+        )
+        response.raise_for_status()
+        items = response.json().get("items", [])
+        
+        prs = []
+        for item in items:
+            # Get detailed PR info including mergeable status
+            pr_api_url = item["pull_request"]["url"]
+            pr_detail_response = requests.get(pr_api_url, headers=headers)
+            pr_detail_response.raise_for_status()
+            pr_detail = pr_detail_response.json()
+            
+            pr = _parse_pr_item(item)
+            pr.mergeable = pr_detail.get("mergeable")
+            pr.mergeable_state = pr_detail.get("mergeable_state")
+            prs.append(pr)
+        
+        return prs
+        
+    except Exception as e:
+        print(f"Error fetching my PRs: {e}")
+        return []

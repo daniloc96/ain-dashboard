@@ -9,6 +9,48 @@ import { CalendarEvent } from "@/types"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
 
+function CalendarEventItem({ event, formatTime }: { event: CalendarEvent, formatTime: (iso: string) => string }) {
+  const [isExpanded, setIsExpanded] = React.useState(false)
+
+  return (
+    <div className="flex w-full items-start justify-between space-x-2 border-b pb-2 last:border-0 last:pb-0">
+      <div
+        className="space-y-1 flex-1 min-w-0 cursor-pointer"
+        role="button"
+        tabIndex={0}
+        aria-expanded={isExpanded}
+        onClick={() => setIsExpanded(!isExpanded)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            setIsExpanded(!isExpanded)
+          }
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-primary">
+            {formatTime(event.start_time)} - {formatTime(event.end_time)}
+          </span>
+        </div>
+        <p className={`text-sm font-medium leading-none ${isExpanded ? 'whitespace-normal break-words' : 'truncate'} max-w-[200px]`} title={event.summary}>
+          {event.summary}
+        </p>
+        {event.location && (
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <MapPin className="h-3 w-3" />
+            <span className={isExpanded ? 'whitespace-normal break-words' : 'truncate max-w-[150px]'}>{event.location}</span>
+          </div>
+        )}
+      </div>
+      <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0" asChild>
+        <a href={event.html_link} target="_blank" rel="noopener noreferrer" aria-label="Open calendar event">
+          <ExternalLink className="h-3 w-3" />
+        </a>
+      </Button>
+    </div>
+  )
+}
+
 export function CalendarWidget() {
   const [events, setEvents] = React.useState<CalendarEvent[]>([])
   const [loading, setLoading] = React.useState(true)
@@ -54,29 +96,7 @@ export function CalendarWidget() {
           ) : (
             <div className="space-y-4">
               {events.map((event, index) => (
-                <div key={index} className="flex items-start justify-between space-x-2 border-b pb-2 last:border-0 last:pb-0">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-primary">
-                        {formatTime(event.start_time)} - {formatTime(event.end_time)}
-                      </span>
-                    </div>
-                    <p className="text-sm font-medium leading-none truncate max-w-[200px]" title={event.summary}>
-                      {event.summary}
-                    </p>
-                    {event.location && (
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <MapPin className="h-3 w-3" />
-                        <span className="truncate max-w-[150px]">{event.location}</span>
-                      </div>
-                    )}
-                  </div>
-                  <Button variant="ghost" size="icon" className="h-6 w-6" asChild>
-                    <a href={event.html_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
-                  </Button>
-                </div>
+                <CalendarEventItem key={index} event={event} formatTime={formatTime} />
               ))}
             </div>
           )}

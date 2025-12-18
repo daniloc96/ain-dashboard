@@ -13,6 +13,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
 export function JiraTasksWidget() {
     const [tasks, setTasks] = React.useState<JiraIssue[]>([])
     const [loading, setLoading] = React.useState(true)
+    const [expanded, setExpanded] = React.useState<Record<string, boolean>>({})
 
     React.useEffect(() => {
         const fetchTasks = async () => {
@@ -58,15 +59,27 @@ export function JiraTasksWidget() {
                     ) : (
                         <div className="space-y-3">
                             {tasks.map((task) => (
-                                <div key={task.key} className="flex items-start gap-2 border-b pb-2 last:border-0 last:pb-0">
-                                    <div className="flex-1 min-w-0 space-y-1">
+                                <div key={task.key} className="flex w-full items-start gap-2 border-b pb-2 last:border-0 last:pb-0">
+                                    <div
+                                        className="flex-1 min-w-0 space-y-1 cursor-pointer"
+                                        role="button"
+                                        tabIndex={0}
+                                        aria-expanded={!!expanded[task.key]}
+                                        onClick={() => setExpanded(prev => ({ ...prev, [task.key]: !prev[task.key] }))}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' || e.key === ' ') {
+                                                e.preventDefault()
+                                                setExpanded(prev => ({ ...prev, [task.key]: !prev[task.key] }))
+                                            }
+                                        }}
+                                    >
                                         <div className="flex items-center gap-2 flex-wrap">
                                             <span className="text-xs font-mono text-muted-foreground shrink-0">{task.key}</span>
                                             <Badge variant="secondary" className={`text-[10px] px-1.5 py-0 shrink-0 ${getStatusColor(task.status)}`}>
                                                 {task.status}
                                             </Badge>
                                         </div>
-                                        <p className="text-sm font-medium leading-tight line-clamp-2" title={task.summary}>
+                                        <p className={`text-sm font-medium leading-tight ${expanded[task.key] ? 'whitespace-normal break-words' : 'truncate'}`} title={task.summary}>
                                             {task.summary}
                                         </p>
                                     </div>

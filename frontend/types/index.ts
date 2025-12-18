@@ -15,6 +15,8 @@ export interface GithubPR {
     created_at: string;
     state: string;
     labels: { name: string; color: string }[];
+    mergeable?: boolean;
+    mergeable_state?: string;
 }
 
 export interface JiraIssue {

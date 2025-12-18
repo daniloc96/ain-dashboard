@@ -2,6 +2,7 @@
 
 import { TodoWidget } from "@/components/widgets/todo-widget"
 import { GithubWidget } from "@/components/widgets/github-widget"
+import { MyPrsWidget } from "@/components/widgets/my-prs-widget"
 import { JiraTasksWidget } from "@/components/widgets/jira-tasks-widget"
 import { CalendarWidget } from "@/components/widgets/calendar-widget"
 
@@ -24,6 +25,11 @@ export default function DashboardPage() {
         </div>
         <div className="col-span-1 border rounded-xl overflow-hidden shadow-sm bg-card/50 min-h-[280px] sm:min-h-[320px]">
           <GithubWidget />
+        </div>
+
+        {/* Row 3 */}
+        <div className="col-span-1 border rounded-xl overflow-hidden shadow-sm bg-card/50 min-h-[280px] sm:min-h-[320px]">
+          <MyPrsWidget />
         </div>
 
       </div>

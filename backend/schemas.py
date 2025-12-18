@@ -31,6 +31,8 @@ class GithubPR(BaseModel):
     created_at: str
     state: str
     labels: List[GithubLabel] = []
+    mergeable: bool | None = None
+    mergeable_state: str | None = None
 
 class JiraIssue(BaseModel):
     key: str
