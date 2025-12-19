@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import models
 from database import engine
-from routers import todos, github, jira, calendar, gmail
+from routers import todos, github, jira, calendar, gmail, google_auth
 import time
 from sqlalchemy.exc import OperationalError
 
@@ -37,6 +37,7 @@ app.include_router(github.router)
 app.include_router(jira.router)
 app.include_router(calendar.router)
 app.include_router(gmail.router)
+app.include_router(google_auth.router)
 
 @app.get("/")
 def read_root():

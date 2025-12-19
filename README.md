@@ -212,17 +212,28 @@ The Calendar widget shows **today's events** and the Gmail icon shows **unread e
     ```bash
     docker compose up
     ```
-2.  **First time only**: A browser window will open asking you to sign in
-3.  **Choose the account** you want to use (personal or work email)
-4.  Grant permission to read your calendar
-5.  A `token.json` file will be created automatically, storing your authorization
+2.  **First time only**: A pop-up dialog will appear in the dashboard asking you to authorize
+3.  Click **"Authorize Google Account"** button in the dialog
+4.  **Choose the account** you want to use (personal or work email)
+5.  Grant permission to read your calendar and email
+6.  A `token.json` file will be created automatically, storing your authorization
+7.  The dialog will close automatically and the widgets will start working
+
+#### Token Expiration & Renewal
+
+When your Google token expires, the dashboard will automatically detect this and show a pop-up dialog with a link to re-authorize. You can:
+
+*   Click **"Authorize Google Account"** to open the authorization page in a new browser tab
+*   After authorizing, click **"Refresh Page"** to reload the dashboard with the new token
 
 > **🔒 Security Note**: The `token.json` file contains your OAuth tokens. It's already in `.gitignore` to prevent accidental commits.
 
 #### Troubleshooting
 
+*   **"Authorization required" dialog appears**: Your token has expired. Simply click the authorization button in the pop-up and follow the steps
 *   **"Access blocked" error**: Make sure you added your email as a "Test user" in the OAuth consent screen
 *   **Wrong calendar showing**: The widget uses your "primary" calendar. Switch accounts by deleting `backend/token.json` and reauthorizing
+*   **Dialog won't close**: Check that you have `NEXT_PUBLIC_API_URL` properly configured pointing to your backend
 
 ---
 

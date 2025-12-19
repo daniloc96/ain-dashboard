@@ -51,3 +51,8 @@ class CalendarEvent(BaseModel):
 
 class GmailUnreadCount(BaseModel):
     count: int
+
+class GoogleAuthStatus(BaseModel):
+    status: str
+    message: str
+    auth_url: str | None = None
