@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import models
 from database import engine
 from routers import todos, github, jira, calendar, gmail, google_auth
+from services.mock_data import is_demo_mode
 import time
 from sqlalchemy.exc import OperationalError
 
@@ -46,3 +47,8 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+@app.get("/api/v1/demo-mode")
+def get_demo_mode_status():
+    """Check if demo mode is enabled."""
+    return {"demo_mode": is_demo_mode()}

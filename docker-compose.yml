@@ -32,6 +32,7 @@ services:
       - JIRA_EMAIL=${JIRA_EMAIL}
       - JIRA_API_TOKEN=${JIRA_API_TOKEN}
       - JIRA_TASK_STATUS_ENABLED=${JIRA_TASK_STATUS_ENABLED}
+      - DEMO_MODE=${DEMO_MODE:-false}
     depends_on:
       - postgres
     logging:

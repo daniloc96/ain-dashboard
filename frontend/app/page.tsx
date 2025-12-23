@@ -6,6 +6,7 @@ import { MyPrsWidget } from "@/components/widgets/my-prs-widget"
 import { JiraTasksWidget } from "@/components/widgets/jira-tasks-widget"
 import { CalendarWidget } from "@/components/widgets/calendar-widget"
 import { GoogleAuthDialog } from "@/components/google-auth-dialog"
+import { DemoModeBanner } from "@/components/demo-mode-banner"
 import { useGoogleAuthStatus } from "@/hooks/use-google-auth-status"
 import * as React from "react"
 
@@ -22,6 +23,7 @@ export default function DashboardPage() {
 
   return (
     <>
+      <DemoModeBanner />
       {authStatus && authStatus.status !== "authorized" && (
         <GoogleAuthDialog
           open={showAuthDialog}

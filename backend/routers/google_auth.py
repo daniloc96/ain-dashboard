@@ -2,6 +2,7 @@ from fastapi import APIRouter, Query
 from fastapi.responses import HTMLResponse, RedirectResponse
 from schemas import GoogleAuthStatus
 from services.google_auth import get_auth_status, get_authorization_url, handle_oauth_callback, AuthStatus
+from services.mock_data import is_demo_mode, get_mock_google_auth_status
 import os
 
 router = APIRouter(prefix="/api/v1/google", tags=["google"])
@@ -14,6 +15,8 @@ REDIRECT_URI = f"{BASE_URL}/api/v1/google/callback"
 @router.get("/auth-status", response_model=GoogleAuthStatus)
 def get_google_auth_status():
     """Get current Google OAuth authorization status."""
+    if is_demo_mode():
+        return get_mock_google_auth_status()
     status = get_auth_status()
     
     if status == AuthStatus.AUTHORIZED:
