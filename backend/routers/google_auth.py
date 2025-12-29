@@ -41,8 +41,64 @@ def get_google_auth_status():
 
 
 @router.get("/callback", response_class=HTMLResponse)
-def google_oauth_callback(code: str = Query(...)):
+def google_oauth_callback(
+    code: str = Query(None),
+    error: str = Query(None),
+    error_description: str = Query(None)
+):
     """Handle OAuth callback from Google."""
+    # Handle error responses from Google (e.g., user denied access)
+    if error:
+        error_msg = error_description or error
+        return f"""
+        <html>
+            <head>
+                <title>Authorization Denied</title>
+                <style>
+                    body {{ font-family: system-ui; display: flex; align-items: center; justify-content: center; height: 100vh; background: #1a1a1a; color: white; }}
+                    .container {{ text-align: center; background: #2a2a2a; padding: 40px; border-radius: 10px; max-width: 400px; }}
+                    h1 {{ color: #f59e0b; margin: 0 0 20px 0; }}
+                    p {{ margin: 0 0 20px 0; }}
+                    .error {{ color: #9ca3af; font-size: 14px; }}
+                    button {{ background: #6b7280; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }}
+                    button:hover {{ background: #4b5563; }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>⚠ Authorization Denied</h1>
+                    <p>Access was not granted to your Google account.</p>
+                    <p class="error">{error_msg}</p>
+                    <p>Please close this window and try again if you want to enable Calendar and Gmail widgets.</p>
+                    <button onclick="window.close()">Close Window</button>
+                </div>
+            </body>
+        </html>
+        """
+    
+    # Handle missing code (shouldn't happen if no error, but just in case)
+    if not code:
+        return """
+        <html>
+            <head>
+                <title>Invalid Request</title>
+                <style>
+                    body { font-family: system-ui; display: flex; align-items: center; justify-content: center; height: 100vh; background: #1a1a1a; color: white; }
+                    .container { text-align: center; background: #2a2a2a; padding: 40px; border-radius: 10px; }
+                    h1 { color: #ef4444; margin: 0 0 20px 0; }
+                    button { background: #6b7280; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>✗ Invalid Request</h1>
+                    <p>No authorization code received.</p>
+                    <button onclick="window.close()">Close Window</button>
+                </div>
+            </body>
+        </html>
+        """
+    
     try:
         # Exchange the code for credentials
         success = handle_oauth_callback(code)
