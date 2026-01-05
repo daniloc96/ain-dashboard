@@ -48,7 +48,16 @@ export function AppSidebar() {
         <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>AIN Dashboard</SidebarGroupLabel>
+                    <div className="flex items-center gap-3 px-2 py-2 mb-2">
+                        <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground overflow-hidden">
+                            <img src="/logo-glyph.png" alt="AIN" className="size-full object-cover" />
+                        </div>
+                        <div className="flex flex-col gap-0.5 leading-none">
+                            <span className="font-semibold">AIN Dashboard</span>
+                            <span className="text-xs text-muted-foreground">v1.0.0</span>
+                        </div>
+                    </div>
+                    <SidebarGroupLabel>Navigation</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (
