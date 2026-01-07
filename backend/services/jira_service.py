@@ -5,9 +5,10 @@ from schemas import JiraIssue
 from requests.auth import HTTPBasicAuth
 
 # Support comma-separated domains: "domain1.atlassian.net,domain2.atlassian.net"
-JIRA_DOMAINS = os.getenv("JIRA_DOMAINS", os.getenv("JIRA_DOMAIN", ""))
-JIRA_EMAIL = os.getenv("JIRA_EMAIL")
-JIRA_API_TOKEN = os.getenv("JIRA_API_TOKEN")
+# Parse comma-separated domains and strip quotes
+JIRA_DOMAINS = os.getenv("JIRA_DOMAINS", os.getenv("JIRA_DOMAIN", "")).strip('"\'')
+JIRA_EMAIL = os.getenv("JIRA_EMAIL", "").strip('"\'')
+JIRA_API_TOKEN = os.getenv("JIRA_API_TOKEN", "").strip('"\'')
 
 def get_my_tasks() -> List[JiraIssue]:
     if not (JIRA_DOMAINS and JIRA_EMAIL and JIRA_API_TOKEN):
@@ -19,10 +20,10 @@ def get_my_tasks() -> List[JiraIssue]:
     auth = HTTPBasicAuth(JIRA_EMAIL, JIRA_API_TOKEN)
     headers = {"Accept": "application/json"}
 
-    # Read status filter
-    status_env = os.getenv("JIRA_TASK_STATUS_ENABLED", "In Progress")
-    statuses = [f'"{s.strip()}"' for s in status_env.split(",")]
-    status_str = ",".join(statuses)
+    # Read status filter and strip potential quotes
+    status_env = os.getenv("JIRA_TASK_STATUS_ENABLED", "In Progress").strip('"\'')
+    statuses = [f'"{s.strip()}"' for s in status_env.split(",") if s.strip()]
+    status_str = ",".join(statuses) if statuses else '"In Progress"'
 
     jql = f"assignee = currentUser() AND status in ({status_str}) ORDER BY priority DESC, updated DESC"
     
