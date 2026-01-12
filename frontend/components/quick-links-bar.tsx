@@ -5,7 +5,7 @@ import { Mail, SquareKanban } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8002"
 
 export function QuickLinksBar() {
     const [unreadCount, setUnreadCount] = React.useState<number>(0)

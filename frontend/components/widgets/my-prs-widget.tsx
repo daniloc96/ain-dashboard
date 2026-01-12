@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { GithubPR } from "@/types"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8002"
 
 function MyPrItem({ pr }: { pr: GithubPR }) {
     const [isExpanded, setIsExpanded] = React.useState(false)
@@ -22,7 +22,7 @@ function MyPrItem({ pr }: { pr: GithubPR }) {
                 </span>
             )
         }
-        
+
         if (pr.mergeable_state === "clean" || (pr.mergeable && pr.mergeable_state !== "blocked")) {
             return (
                 <span title="Ready to merge">

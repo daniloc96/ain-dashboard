@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8002"
 
 export interface GoogleAuthStatus {
   status: "authorized" | "expired" | "not_configured"
@@ -16,18 +16,18 @@ export function useGoogleAuthStatus() {
   const checkAuthStatus = async () => {
     try {
       const url = `${API_URL}/api/v1/google/auth-status`
-      
+
       const res = await fetch(url, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
         },
       })
-      
+
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}: ${res.statusText}`)
       }
-      
+
       const data = await res.json()
       setAuthStatus(data)
       setError(null)

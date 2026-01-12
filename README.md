@@ -165,7 +165,7 @@ A `token.json` file will be created automatically. When it expires, the dashboar
 
 | Variable | Required | Description |
 |----------|:--------:|-------------|
-| `NEXT_PUBLIC_API_URL` | ✅ | Backend URL (default: `http://localhost:8001`) |
+| `NEXT_PUBLIC_API_URL` | ✅ | Backend URL (default: `http://localhost:8002`) |
 | `DATABASE_URL` | ✅ | PostgreSQL connection string |
 | `POSTGRES_USER` | ✅ | Database username |
 | `POSTGRES_PASSWORD` | ✅ | Database password |
@@ -241,7 +241,7 @@ docker compose restart backend
 # Just save your files and refresh the browser
 ```
 
-**API Documentation**: [http://localhost:8001/docs](http://localhost:8001/docs) (Swagger UI)
+**API Documentation**: [http://localhost:8002/docs](http://localhost:8002/docs) (Swagger UI)
 
 ---
 

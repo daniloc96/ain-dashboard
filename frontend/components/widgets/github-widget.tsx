@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { GithubPR } from "@/types"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8002"
 
 function GithubPrItem({ pr }: { pr: GithubPR }) {
     const [isExpanded, setIsExpanded] = React.useState(false)

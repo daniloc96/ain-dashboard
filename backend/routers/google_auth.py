@@ -8,7 +8,7 @@ import os
 router = APIRouter(prefix="/api/v1/google", tags=["google"])
 
 # Get the base URL from environment, default to localhost for local dev
-BASE_URL = os.getenv('NEXT_PUBLIC_API_URL', 'http://localhost:8001')
+BASE_URL = os.getenv('NEXT_PUBLIC_API_URL', 'http://localhost:8002')
 REDIRECT_URI = f"{BASE_URL}/api/v1/google/callback"
 
 

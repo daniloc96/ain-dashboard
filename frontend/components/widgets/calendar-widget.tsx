@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { CalendarEvent } from "@/types"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8002"
 
 function CalendarEventItem({ event, formatTime }: { event: CalendarEvent, formatTime: (iso: string) => string }) {
   const [isExpanded, setIsExpanded] = React.useState(false)

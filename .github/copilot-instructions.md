@@ -5,7 +5,7 @@
 This is a **local-first personal productivity dashboard** that aggregates work streams into a single UI:
 - **Frontend**: Next.js 16 (App Router) + TypeScript + Tailwind CSS + shadcn/ui components
 - **Backend**: FastAPI (Python) + SQLAlchemy + PostgreSQL
-- **Deployment**: Docker Compose orchestrates all services (frontend:3001, backend:8001, postgres:5433)
+- **Deployment**: Docker Compose orchestrates all services (frontend:3001, backend:8002, postgres:5433)
 - **External Integrations**: GitHub, Jira (multi-domain), Google Calendar, Gmail via API tokens/OAuth
 
 ## Critical Developer Workflows
@@ -21,7 +21,7 @@ docker compose down                     # Stop all services
 ### Backend Development
 - **No hot reload**: Backend requires rebuild after code changes (`docker compose restart backend`)
 - **DB connection retry logic**: [main.py](backend/main.py) has 5-attempt retry on startup - essential for Docker compose startup race conditions
-- **API docs**: http://localhost:8001/docs (FastAPI auto-generated Swagger UI)
+- **API docs**: http://localhost:8002/docs (FastAPI auto-generated Swagger UI)
 
 ### Frontend Development
 - **Uses React 19 + Next.js 16** with experimental features (React Compiler enabled in [package.json](frontend/package.json))
