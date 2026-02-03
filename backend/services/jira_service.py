@@ -25,8 +25,17 @@ def get_my_tasks() -> List[JiraIssue]:
     statuses = [f'"{s.strip()}"' for s in status_env.split(",") if s.strip()]
     status_str = ",".join(statuses) if statuses else '"In Progress"'
 
-    jql = f"assignee = currentUser() AND status in ({status_str}) ORDER BY priority DESC, updated DESC"
-    
+    # Optional: restrict to specific project keys (e.g. ECAP) when set
+    project_keys_env = os.getenv("JIRA_PROJECT_KEYS", "").strip('"\'')
+    project_filter = ""
+    if project_keys_env:
+        keys = [k.strip() for k in project_keys_env.split(",") if k.strip()]
+        if keys:
+            keys_quoted = [f'"{k}"' for k in keys]
+            project_filter = f" AND project in ({','.join(keys_quoted)})"
+
+    jql = f"assignee = currentUser() AND status in ({status_str}){project_filter} ORDER BY priority DESC, updated DESC"
+
     params = {
         "jql": jql,
         "fields": "summary,status,priority,assignee"
@@ -34,10 +43,12 @@ def get_my_tasks() -> List[JiraIssue]:
 
     all_issues = []
     
+    # Jira Cloud API v3: GET /rest/api/3/search/jql (legacy /rest/api/3/search returns 410)
     for domain in domains:
         try:
             url = f"https://{domain}/rest/api/3/search/jql"
-            response = requests.get(url, headers=headers, params=params, auth=auth)
+            params_with_max = {**params, "maxResults": 100}
+            response = requests.get(url, headers=headers, params=params_with_max, auth=auth)
             response.raise_for_status()
             data = response.json()
             
@@ -62,9 +73,14 @@ def get_my_tasks() -> List[JiraIssue]:
                     url=f"https://{domain}/browse/{item['key']}"
                 ))
                 
+        except requests.RequestException as e:
+            # Log so you can see if one domain (e.g. ECAP board domain) fails
+            print(f"[Jira] Error fetching from {domain}: {e}")
+            if hasattr(e, "response") and e.response is not None:
+                print(f"[Jira] Response status: {e.response.status_code}, body: {e.response.text[:200]}")
+            continue
         except Exception as e:
-            print(f"Error fetching Jira issues from {domain}: {e}")
-            # Continue to next domain even if one fails
+            print(f"[Jira] Unexpected error from {domain}: {e}")
             continue
     
     return all_issues
